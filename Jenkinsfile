@@ -27,9 +27,7 @@ node(label: 'slave') {
 			sh "docker run --rm -v ${workspace}:/home/gradle -v gradle_cache:/home/gradle/.gradle -u `id -u`:`id -g` -w /home/gradle docker.artifactory.sapient.com/util-gradle:latest gradle build"
 		}      
 
-		stage ('Run Test Cases') {
-//			junit 'build/test-results/**/*.xml'
-		}
+		
 	
 		stage("Run Fortify Security Analysis"){
 			if(FORTIFY_RUN == 'true'){
