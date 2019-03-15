@@ -28,7 +28,7 @@ node(label: 'slave') {
 		}      
 
 		stage ('Run Test Cases') {
-			junit 'build/test-results/**/*.xml'
+//			junit 'build/test-results/**/*.xml'
 		}
 	
 		stage("Run Fortify Security Analysis"){
