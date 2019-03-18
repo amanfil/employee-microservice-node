@@ -28,7 +28,7 @@ node(label: 'master') {
       
       stage("Run Sonar Analysis"){
 	     withSonarQubeEnv('sonarqube'){
-           sh "docker run --rm -v ${workspace}:/tmp/ap-frontend -w /tmp/ap-frontend -e SONAR_HOST_URL=${SONAR_HOST_URL} -e SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN} docker.artifactory.ceterainternal.com/util-sonar-runner:latest /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.projectKey=cetera-ap-frontend -Dsonar.projectName=cetera-ap-frontend -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info -Dsonar.typescript.jstestdriver.coveragefile=coverage/lcov.info -Dsonar.projectBaseDir=. -Dsonar.sources=src -Dsonar.password= -Dsonar.exclusions=src/**/*.spec.ts,src/assets/js/new-relic.js,src/environments/*,src/mocks/*,src/app/modules/ap-dashboard/components/marketing-content/marketing-content.component.ts"
+           sh "docker run --rm -v ${workspace}:/tmp/ap-frontend -w /tmp/ap-frontend -e SONAR_HOST_URL=${SONAR_HOST_URL} -e SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN} docker.artifactory.sapient.com/util-sonar-runner:latest /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.projectKey=sap-frontend -Dsonar.projectName=sap-frontend -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info -Dsonar.typescript.jstestdriver.coveragefile=coverage/lcov.info -Dsonar.projectBaseDir=. -Dsonar.sources=src -Dsonar.password= "
 
 		   }
 	 }
