@@ -23,7 +23,7 @@ node(label: 'master') {
         sh "logoutdocker"
 	      sh "logindocker"
 	      sh "docker pull docker.artifactory.sapient.com/util-node:9.5.0-latest"
-        sh "docker run --rm -v ${workspace}/employee-microservice-node:/tmp/employee-microservice-node:Z -w /tmp/employee-microservice-node docker.artifactory.sapient.com/util-node:9.5.0-latest npm install"
+        sh "docker run --rm -v ${workspace}/CaseStudy:/tmp/employee-microservice-node:Z -w /tmp/employee-microservice-node docker.artifactory.sapient.com/util-node:9.5.0-latest npm install"
     }
     /*  stage('Run Test Case'){
        sh "npm run test --code-coverage --watch=false"
