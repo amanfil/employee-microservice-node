@@ -18,11 +18,13 @@ node(label: 'master') {
 			checkout([$class: 'GitSCM', branches: [[name: "${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'a6e6d971-7ca6-4e96-8c2e-f173c57c5a0c', url: 'https://github.com/amanfil/employee-microservice-node']]])
 		}
 		
-     stage('Build'){
-       sh "npm install"
-     }
-      
-      stage('Run Test Case'){
+    stage('Build'){
+        def workspace = pwd ()
+        sh "logoutdocker"
+	    sh "logindocker"
+	    sh "docker pull docker.artifactory.sapient.com/util-node:9.5.0-latest"
+    }
+    /*  stage('Run Test Case'){
        sh "npm run test --code-coverage --watch=false"
       }
       
@@ -31,7 +33,7 @@ node(label: 'master') {
            sh "docker run --rm -v ${workspace}:/tmp/ap-frontend -w /tmp/ap-frontend -e SONAR_HOST_URL=${SONAR_HOST_URL} -e SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN} docker.artifactory.sapient.com/util-sonar-runner:latest /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.projectKey=sap-frontend -Dsonar.projectName=sap-frontend -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info -Dsonar.typescript.jstestdriver.coveragefile=coverage/lcov.info -Dsonar.projectBaseDir=. -Dsonar.sources=src -Dsonar.password= "
 
 		   }
-	 }
+	 }*/
 }
     catch (err) {
         currentBuild.result = "FAILURE"
