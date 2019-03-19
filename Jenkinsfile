@@ -21,8 +21,9 @@ node(label: 'master') {
     stage('Build'){
         def workspace = pwd ()
         sh "logoutdocker"
-	    sh "logindocker"
-	    sh "docker pull docker.artifactory.sapient.com/util-node:9.5.0-latest"
+	      sh "logindocker"
+	      sh "docker pull docker.artifactory.sapient.com/util-node:9.5.0-latest"
+        sh "docker run --rm -v ${workspace}/employee-frontend:/tmp/employee-frontend:Z -w /tmp/employee-frontend docker.artifactory.sapient.com/util-node:9.5.0-latest npm install"
     }
     /*  stage('Run Test Case'){
        sh "npm run test --code-coverage --watch=false"
