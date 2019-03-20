@@ -32,7 +32,7 @@ node(label: 'master') {
       stage("Run Sonar Analysis"){
         sh "docker pull docker.artifactory.sapient.com/util-sonar-runner:latest"
 	     withSonarQubeEnv('sonarqube'){
-           sh "docker run --rm -v ${workspace}:/tmp/employee-frontend -w /tmp/employee-frontend -e SONAR_HOST_URL=${SONAR_HOST_URL} -e SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN} docker.artifactory.sapient.com/util-sonar-runner:latest /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.projectKey=sap-frontend -Dsonar.projectName=sap-frontend -Dsonar.typescript.lcov.reportPaths=index.html -Dsonar.typescript.jstestdriver.coveragefile=index.html -Dsonar.projectBaseDir=. -Dsonar.sources=app -Dsonar.password= "
+           sh "docker run --rm -v ${workspace}:/tmp/employee-frontend -w /tmp/employee-frontend -e SONAR_HOST_URL=${SONAR_HOST_URL} -e SONAR_AUTH_TOKEN=${SONAR_AUTH_TOKEN} docker.artifactory.sapient.com/util-sonar-runner:latest /opt/sonar-scanner/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.projectKey=sap-frontend -Dsonar.projectName=sap-frontend -Dsonar.typescript.lcov.reportPaths=employee-microservice-node/coverage/index.html -Dsonar.typescript.jstestdriver.coveragefile=employee-microservice-node/coverage/index.html -Dsonar.projectBaseDir=. -Dsonar.sources=app -Dsonar.password= "
 
 		   }
 	 }
