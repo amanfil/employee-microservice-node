@@ -37,6 +37,25 @@ node(label: 'master') {
 		   }
 	 }
 }
+   stage("Quality Gate"){
+	  sh "sleep 30s"
+      withSonarQubeEnv('sonarqube') {
+        env.SONAR_CE_TASK_URL = sh(returnStdout: true, script: """cat ${workspace}/.sonar/report-task.txt|grep -a 'ceTaskUrl'|awk -F '=' '{print \$2\"=\"\$3}'""")
+        timeout(time: 1, unit: 'MINUTES') {
+            sh 'curl -u $SONAR_AUTH_TOKEN $SONAR_CE_TASK_URL -o ceTask.json'
+            env.analysisID = sh(returnStdout: true, script: """cat ceTask.json |awk -F 'analysisId' '{print \$2}'|awk -F ':' '{print \$2}'|awk -F '\"' '{print \$2}'""")
+            sh "echo $analysisID"
+            println(analysisID)
+            env.qualityGateUrl = env.SONAR_HOST_URL + "/api/qualitygates/project_status?analysisId=" + env.analysisID
+            sh 'curl -u $SONAR_AUTH_TOKEN $qualityGateUrl -o qualityGate.json'
+            env.qualitygate = sh(returnStdout: true, script: """cat qualityGate.json |awk -F 'status' '{print \$2}'|awk -F ':' '{print \$2}'|awk -F '\"' '{print \$2}'""")
+            if (qualitygate.trim().equals("ERROR")) {
+              error  "Quality Gate failure"
+            }
+            echo  "Quality Gate success"
+        }
+      }
+    }
     catch (err) {
         currentBuild.result = "FAILURE"
         throw err
