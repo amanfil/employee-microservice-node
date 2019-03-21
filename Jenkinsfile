@@ -1,7 +1,7 @@
 env.DISPLAY=":0"
 node(label: 'master') {
     def BUILD_BRANCH = "dev" // this should eventually come from a parameter or evaluated based on the parameter
-  	def MAJOR_MINOR = "${params.RELEASE_VERSION}" //eventually this may come from the version.txt file (or other) which is in the root
+  	def MAJOR_MINOR = 1.0 //eventually this may come from the version.txt file (or other) which is in the root
     def VERSION_IMAGE_LABEL = "${MAJOR_MINOR}.${BUILD_NUMBER}-${BUILD_BRANCH}" //use semantic versioning
     def LATEST_DOCKER_IMAGE_LABEL = "latest-dev"
     def IMAGE_NAME = "employee-microservice-node"
