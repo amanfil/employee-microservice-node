@@ -71,6 +71,18 @@ node(label: 'master') {
       stage ('Tag Docker Image') {
       	    sh "docker tag ${DOCKER_REPO}/${IMAGE_NAME}:${VERSION_IMAGE_LABEL} ${DOCKER_REPO}/${IMAGE_NAME}:${LATEST_DOCKER_IMAGE_LABEL}"
 	   }
+      
+     stage('Docker Image Upload to Artifactory'){
+      sh "logoutdocker"
+      sh "logindocker"
+        if(WORKING_BRANCH =~ 'origin/master') {
+            sh "docker push ${DOCKER_REPO}/${IMAGE_NAME}:${VERSION_IMAGE_LABEL}"
+            sh "docker push ${DOCKER_REPO}/${IMAGE_NAME}:${LATEST_DOCKER_IMAGE_LABEL}"
+        }
+      sh "logoutdocker"
+      sh "docker rmi -f ${DOCKER_REPO}/${IMAGE_NAME}:${VERSION_IMAGE_LABEL}"
+      sh "docker rmi -f ${DOCKER_REPO}/${IMAGE_NAME}:${LATEST_DOCKER_IMAGE_LABEL}"
+	} 
    }   
     catch (err) {
         currentBuild.result = "FAILURE"
