@@ -53,9 +53,10 @@ node(label: 'master') {
               error  "Quality Gate failure"
             }
             echo  "Quality Gate success"
+          }
         }
       }
-    }
+    }   
     catch (err) {
         currentBuild.result = "FAILURE"
         throw err
