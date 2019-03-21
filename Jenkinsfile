@@ -36,7 +36,7 @@ node(label: 'master') {
 
 		   }
 	 }
-}
+
    stage("Quality Gate"){
 	  sh "sleep 30s"
       withSonarQubeEnv('sonarqube') {
