@@ -5,7 +5,7 @@ node(label: 'master') {
     def VERSION_IMAGE_LABEL = "${MAJOR_MINOR}.${BUILD_NUMBER}-${BUILD_BRANCH}" //use semantic versioning
     def LATEST_DOCKER_IMAGE_LABEL = "latest-dev"
     def IMAGE_NAME = "employee-microservice-node"
-    def DOCKER_REPO = "docker-dev.artifactory.sapient.com"
+    def DOCKER_REPO = "docker.artifactory.sapient.com"
     def WORKING_BRANCH = ""
 	def STREAM = "${params.STREAM}"
 
@@ -56,7 +56,22 @@ node(label: 'master') {
           }
         }
       }
-    }   
+      stage('Build Docker Image'){
+      sh "logoutdocker"
+      sh "logindocker"
+      sh "cd ${workspace}"
+	    if(WORKING_BRANCH =~ 'origin/master') {
+            VERSION_IMAGE_LABEL = "${MAJOR_MINOR}.${BUILD_NUMBER}-dev"
+            LATEST_DOCKER_IMAGE_LABEL = "latest-dev${STREAM}"
+        }
+        
+		sh "echo 'the current version is [${VERSION_IMAGE_LABEL}] the latest tag is [${LATEST_DOCKER_IMAGE_LABEL}] from branch [${WORKING_BRANCH}] - ${params.BRANCH_SPECIFIER}'"
+        sh "docker build -t ${DOCKER_REPO}/${IMAGE_NAME}:${VERSION_IMAGE_LABEL} -f Dockerfile ."
+      }
+      stage ('Tag Docker Image') {
+      	    sh "docker tag ${DOCKER_REPO}/${IMAGE_NAME}:${VERSION_IMAGE_LABEL} ${DOCKER_REPO}/${IMAGE_NAME}:${LATEST_DOCKER_IMAGE_LABEL}"
+	   }
+   }   
     catch (err) {
         currentBuild.result = "FAILURE"
         throw err
