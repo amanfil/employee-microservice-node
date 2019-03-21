@@ -62,7 +62,7 @@ node(label: 'master') {
       sh "cd ${workspace}"
 	    if(WORKING_BRANCH =~ 'origin/master') {
             VERSION_IMAGE_LABEL = "${MAJOR_MINOR}.${BUILD_NUMBER}-dev"
-            LATEST_DOCKER_IMAGE_LABEL = "latest-dev${STREAM}"
+            LATEST_DOCKER_IMAGE_LABEL = "latest-dev"
         }
         
 		sh "echo 'the current version is [${VERSION_IMAGE_LABEL}] the latest tag is [${LATEST_DOCKER_IMAGE_LABEL}] from branch [${WORKING_BRANCH}] - ${params.BRANCH_SPECIFIER}'"
