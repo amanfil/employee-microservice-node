@@ -27,6 +27,7 @@ node(label: 'master') {
     }
     stage('Run Test Cases'){
         sh "docker run --rm -v ${workspace}:/tmp/employee-frontend:Z -w /tmp/employee-frontend -e CHROME_BIN=/usr/bin/chromium-browser docker.artifactory.sapient.com/util-node:9.5.0-latest npm run test --code-coverage --watch=false"
+        sh "docker run --rm -v ${workspace}:/tmp/employee-microservice-node:Z -w /tmp/employee-microservice-node docker.artifactory.sapient.com/util-node:9.5.0-latest npm run coverage"
 	   }
       
       stage("Run Sonar Analysis"){
